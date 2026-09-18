@@ -6,6 +6,7 @@ import pagesRouter from "./routes/pages.js";
 import apiRouter from "./routes/api.js";
 
 const app = express();
+app.set("view engine", "ejs");
 const PORT = process.env.PORT || 3000;
 
 app.get("/", (req, res) => {
@@ -16,10 +17,8 @@ app.get("/hello", (req, res) => {
   res.send("I learn about setting up express and nodejs");
 });
 
-app.get("/status", (req, res) => {
-  res.json({
-    status: "ok",
-    uptime: process.uptime(),
+app.get("/about", (req, res) => {
+  res.render("about", {title: "About"
   });
 });
 app.get("/hello/:name", (req, res) => {
@@ -32,14 +31,6 @@ app.get("/search", (req, res) => {
   const limit = parseInt(req.query.limit) || 5;
   res.send(`Searching for "${term}", showing ${limit} results.`);
 });
-
-// app.get("/api/user/:id", (req, res) => {
-//   if (req.params.id !== "1") {
-//     res.status(404).send("User not found.");
-//     return;
-//   }
-//   res.json({ id: "1", name: "Alice", role: "admin" });
-// });
 
 app.use("/", pagesRouter);
 app.use("/api", apiRouter);
